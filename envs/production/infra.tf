@@ -18,6 +18,9 @@ variable "ip_tim" {
 variable "ip_github" {
   default = "192.30.252.0/22"
 }
+variable "ip_all" {
+  default = "0.0.0.0/0"
+}
 
 
 provider "aws" {
@@ -70,9 +73,7 @@ resource "aws_security_group" "fw-infra-imagemagick-main" {
     to_port = 22
     protocol = "tcp"
     cidr_blocks = [
-      "${var.ip_kevin}",
-      "${var.ip_marius}",
-      "${var.ip_tim}"
+      "${var.ip_all}"
     ]
   }
 
@@ -82,10 +83,7 @@ resource "aws_security_group" "fw-infra-imagemagick-main" {
     to_port = 80
     protocol = "tcp"
     cidr_blocks = [
-      "${var.ip_github}",
-      "${var.ip_kevin}",
-      "${var.ip_marius}",
-      "${var.ip_tim}"
+      "${var.ip_all}"
     ]
   }
 }
