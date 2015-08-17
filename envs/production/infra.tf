@@ -40,7 +40,7 @@ variable "region" {
 
 resource "aws_instance" "infra-imagemagick-server" {
   ami = "${lookup(var.ami, var.region)}"
-  instance_type = "c4.xlarge"
+  instance_type = "c3.large"
   key_name = "${var.IIM_SSH_KEY_NAME}"
   security_groups = [
     "fw-infra-imagemagick-main"
