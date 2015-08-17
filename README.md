@@ -15,6 +15,9 @@ This repository can create an ImageMagick server from scratch, following this fl
  - show   : Displays active platform
 ```
 
+![terrible](https://cloud.githubusercontent.com/assets/26752/9314635/64b6be5c-452a-11e5-8d00-74e0b023077e.gif)
+
+
 ## Important files
 
  - <envs/production/infra.tf> responsible for creating server/ram/cpu/dns
