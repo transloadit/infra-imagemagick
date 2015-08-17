@@ -2,7 +2,18 @@
 
 ## Intro
 
-This repository can create an ImageMagick server from scratch.
+This repository can create an ImageMagick server from scratch, following this flow:
+
+```yaml
+ - prepare: Install prerequisites
+ - init   : Refreshes current infra state and saves to terraform.tfstate
+ - plan   : Shows infra changes and saves in an executable plan
+ - launch : Launches virtual machines at a provider (if needed) using Terraform's ./infra.tf
+ - install: Runs Ansible to install software packages & configuration templates
+ - upload : Upload the application
+ - setup  : Runs the ./payload/setup.sh remotely, installing app dependencies and starting it
+ - show   : Displays active platform
+```
 
 ## Important files
 

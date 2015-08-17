@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Transloadit CI. Copyright (c) 2015, Transloadit Ltd.
+# infra-imagemagick. Copyright (c) 2015, Transloadit Ltd.
 #
 # This file:
 #
@@ -7,10 +7,10 @@
 #  - Looks at environment for cloud provider credentials, keys and their locations
 #  - Takes a 1st argument, the step:
 #    - prepare: Install prerequisites
-#    - init   : Refreshes current infra state and saves to ./terraform.tfstate
+#    - init   : Refreshes current infra state and saves to terraform.tfstate
 #    - plan   : Shows infra changes and saves in an executable plan
 #    - launch : Launches virtual machines at a provider (if needed) using Terraform's ./infra.tf
-#    - install: Runs the ./payload/install.sh remotely, installing system software
+#    - install: Runs Ansible to install software packages & configuration templates
 #    - upload : Upload the application
 #    - setup  : Runs the ./payload/setup.sh remotely, installing app dependencies and starting it
 #    - show   : Displays active platform
