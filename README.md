@@ -41,22 +41,41 @@ as you see this is a very powerful way to set up many more servers, or deal with
 
 ### Terraform
 
-Installed automatically if missing.
+> Terraform can set up machines & other resources at nearly all cloud providers
+
+Installed automatically by `control.sh prepare` if missing.
 
 ### terraform-inventory
 
-#### OSX
+> Passes the hosts that Terraform created to Ansible.
+> Parses state file, converts that to Ansible inventory.
+
+**On OSX**
 
 brew install https://raw.github.com/adammck/terraform-inventory/master/homebrew/terraform-inventory.rb
 
+**On Linux**
+
+Either compile the Go build, or use https://github.com/Homebrew/linuxbrew and `brew install` as well.
+
 ### Ansible
 
-#### OSX
+> A pragmatic, standardized way of provisioning servers with software & configuration.
+
+**On OSX**
 
 ```bash
 sudo -HE easy_install pip
 sudo -HE pip install --upgrade pip
 sudo -HE CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install --upgrade ansible
+```
+
+**On Linux**
+
+```bash
+sudo -HE easy_install pip
+sudo -HE pip install --upgrade pip
+sudo -HE pip install --upgrade ansible
 ```
 
 ## Todo
