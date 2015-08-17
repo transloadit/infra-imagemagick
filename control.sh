@@ -284,7 +284,7 @@ for action in "prepare" "init" "plan" "launch" "install" "upload" "setup" "show"
       sleep ${IIM_VERIFY_TIMEOUT}
       # exit 1
       ${__terraformExe} apply ${__planfile}
-      git commit -m 'Save infra state' envs/production/terraform.tfstate
+      git commit -m 'Save infra state' envs/production/terraform.tfstate || true
     else
       echo "Skipping, no changes. "
     fi
