@@ -284,7 +284,8 @@ for action in "prepare" "init" "plan" "launch" "install" "upload" "setup" "show"
       sleep ${IIM_VERIFY_TIMEOUT}
       # exit 1
       ${__terraformExe} apply ${__planfile}
-      git commit -m 'Save infra state' envs/production/terraform.tfstate || true
+      git commit -m "Save infra state" "${__statefile}" || true
+      git commit -m "Save infra state" "${__statefile}.backup" || true
     else
       echo "Skipping, no changes. "
     fi
@@ -292,10 +293,10 @@ for action in "prepare" "init" "plan" "launch" "install" "upload" "setup" "show"
   fi
 
   if [ "${action}" = "install" ]; then
+    ANSIBLE_HOST_KEY_CHECKING=False \
     TF_STATE="${__statefile}" \
       ansible-playbook \
         --sudo \
-        --extra-vars 'host_key_checking=False' \
         --inventory-file="$(which terraform-inventory)" "${__playbookfile}" \
         --private-key "${IIM_SSH_KEY_FILE}"
 
