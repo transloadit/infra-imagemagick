@@ -42,6 +42,10 @@ deploy-unsafe:
 backup:
 	source env.sh && ./control.sh backup
 
+.PHONY: restore
+restore:
+	source env.sh && ./control.sh restore
+
 .PHONY: console
 console:
 	source env.sh && ./control.sh remote

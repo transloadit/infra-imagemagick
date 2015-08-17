@@ -9,6 +9,7 @@
 #    - prepare: Install prerequisites
 #    - init   : Refreshes current infra state and saves to terraform.tfstate
 #    - plan   : Shows infra changes and saves in an executable plan
+#    - backup : Backs up server state
 #    - launch : Launches virtual machines at a provider (if needed) using Terraform's ./infra.tf
 #    - install: Runs Ansible to install software packages & configuration templates
 #    - upload : Upload the application
@@ -201,7 +202,7 @@ if [ "${step}" = "restore" ]; then
 fi
 
 processed=""
-for action in "prepare" "init" "plan" "launch" "install" "upload" "setup" "show"; do
+for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setup" "show"; do
   [ "${action}" = "${step}" ] && enabled=1
   [ "${enabled}" -eq 0 ] && continue
   if [ -n "${processed}" ] && [ "${afterone}" = "done" ]; then
@@ -274,6 +275,11 @@ for action in "prepare" "init" "plan" "launch" "install" "upload" "setup" "show"
   if [ "${action}" = "plan" ]; then
     rm -f ${__planfile}
     bash -c "${__terraformExe} plan -refresh=false ${terraformArgs} -out ${__planfile}"
+    processed="${processed} ${action}" && continue
+  fi
+
+  if [ "${action}" = "backup" ]; then
+    # Save state before possibly destroying machine
     processed="${processed} ${action}" && continue
   fi
 
