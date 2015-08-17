@@ -1,0 +1,41 @@
+- name: Install infra-imagemagick-server
+  hosts: infra-imagemagick-server
+  remote_user: ubuntu
+
+  tasks:
+    - name: Get OS
+      shell: "lsb_release -cs"
+      register: ubuntu_current_version
+
+    - name: Add US APT Mirrors
+      action: template src=templates/sources.list dest=/etc/apt/sources.list
+      register: apt_sources
+
+    - name: Update APT Cache
+      apt: update_cache=yes
+      when: apt_sources|changed
+
+    - name: Install Packages
+      apt: pkg={{ item }} state=present
+      with_items:
+        - apache2
+        - apg
+        - build-essential
+        - curl
+        - git-core
+        - htop
+        - iotop
+        - libpcre3
+        - logtail
+        - mlocate
+        - mtr
+        - mysql-client
+        - phpbb3
+        - psmisc
+        - telnet
+        - vim
+        - wget
+
+    - name: Set bashrc
+      action: template src=templates/bashrc dest=/home/ubuntu/.bashrc
+      register: bashrc

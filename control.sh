@@ -10,7 +10,6 @@
 #    - init   : Refreshes current infra state and saves to ./terraform.tfstate
 #    - plan   : Shows infra changes and saves in an executable plan
 #    - launch : Launches virtual machines at a provider (if needed) using Terraform's ./infra.tf
-#    - seed   : Transmit the ./env and ./payload install scripts to remote homedir
 #    - install: Runs the ./payload/install.sh remotely, installing system software
 #    - upload : Upload the application
 #    - setup  : Runs the ./payload/setup.sh remotely, installing app dependencies and starting it
@@ -52,9 +51,7 @@ __terraformExe="${__terraformDir}/terraform"
 
 __planfile="${__envdir}/terraform.plan"
 __statefile="${__envdir}/terraform.tfstate"
-__inventoryfile="${__envdir}/inventory.list"
-__playbookfile="${__envdir}/playbook.yml"
-__ansiblecfgfile="${__rootdir}/ansible.cfg"
+__playbookfile="${__payloaddir}/playbook.yml"
 
 __terraformVersion="0.6.3"
 
@@ -204,7 +201,7 @@ if [ "${step}" = "restore" ]; then
 fi
 
 processed=""
-for action in "prepare" "init" "plan" "launch" "seed" "install" "upload" "setup" "show"; do
+for action in "prepare" "init" "plan" "launch" "install" "upload" "setup" "show"; do
   [ "${action}" = "${step}" ] && enabled=1
   [ "${enabled}" -eq 0 ] && continue
   if [ -n "${processed}" ] && [ "${afterone}" = "done" ]; then
@@ -293,21 +290,7 @@ for action in "prepare" "init" "plan" "launch" "seed" "install" "upload" "setup"
     processed="${processed} ${action}" && continue
   fi
 
-  if [ "${action}" = "seed" ]; then
-    # First enrich the payload with bash3boilerplate and env specific config
-    rsync -a --progress --delete ${__rootdir}/node_modules/bash3boilerplate/ ${__payloaddir}/bash3boilerplate
-    mkdir -p ${__payloaddir}/env
-    cp ${__envdir}/../_default.sh ${__payloaddir}/env/
-    cp ${__envdir}/config.sh ${__payloaddir}/env/
-    chmod 600 ${__payloaddir}/env/*.sh
-    # Then syncUp upstream
-    inParallel "syncUp" "~/payload/" "${__payloaddir}/*"
-    rm -rf ${__payloaddir}/env
-    processed="${processed} ${action}" && continue
-  fi
-
   if [ "${action}" = "install" ]; then
-    ANSIBLE_CONFIG="${__ansiblecfgfile}" \
     TF_STATE="${__statefile}" \
       ansible-playbook \
         --sudo \
@@ -320,12 +303,12 @@ for action in "prepare" "init" "plan" "launch" "seed" "install" "upload" "setup"
   fi
 
   if [ "${action}" = "upload" ]; then
-    "${__file}" "seed" "done"
+    # Upload/Download app here
     processed="${processed} ${action}" && continue
   fi
 
   if [ "${action}" = "setup" ]; then
-    inParallel "remote" "bash -c \"source ~/payload/env/config.sh && sudo -E bash ~/payload/setup.sh\""
+    # Restart services
     processed="${processed} ${action}" && continue
   fi
 

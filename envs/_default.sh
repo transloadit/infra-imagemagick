@@ -30,7 +30,7 @@ export IIM_DOMAIN="imagemagick1.transloadit.com"
 
 export IIM_APP_DIR="/srv/current"
 export IIM_APP_NAME="imagemagick"
-export IIM_APP_PORT="8080"
+export IIM_APP_PORT="80"
 export IIM_HOSTNAME="$(uname -n)"
 
 export IIM_SERVICE_USER="www-data"
