@@ -1,0 +1,9 @@
+*.un~
+*.swp
+*.pid
+node_modules
+npm-debug.log
+terraform/
+payload/bash3boilerplate/
+envs/production/terraform.plan
+env.sh

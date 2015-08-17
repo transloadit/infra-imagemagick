@@ -1,0 +1,35 @@
+- name: Install infra-imagemagick-server
+  hosts: infra-imagemagick-server
+  remote_user: ubuntu
+
+  vars:
+    nginx_version: 1.4.4
+
+  handlers:
+    - name: restart nginx
+      service: name=nginx state=restarted
+
+  tasks:
+    - name: Check if nginx is installed
+      shell: "(which nginx > /dev/null 2>&1 && nginx -v 2>&1 |awk -F/ '{print $NF}') || true"
+      register: nginx_current_version
+      tags: nginx
+
+    - name: Add PPA
+      apt_repository: repo='ppa:nginx/stable'
+      when: "'{{ nginx_current_version.stdout }}' != '{{ nginx_version }}'"
+      tags: nginx
+
+    - name: Install Nginx
+      apt: pkg=nginx state=present
+      when: "'{{ nginx_current_version.stdout }}' != '{{ nginx_version }}'"
+      tags: nginx
+
+    - name: Start server
+      service: name=nginx state=started enabled=true
+      tags: nginx
+
+    - name: Delete default vhost
+      action: file path=/etc/nginx/sites-enabled/default state=absent
+      notify: restart nginx
+      tags: nginx
