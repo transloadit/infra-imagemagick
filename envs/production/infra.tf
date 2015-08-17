@@ -9,17 +9,8 @@ variable "IIM_SSH_KEY_NAME" {}
 variable "ip_christy" {
   default = "50.251.58.9/32"
 }
-variable "ip_marius" {
-  default = "84.146.5.70/32"
-}
 variable "ip_kevin" {
   default = "62.163.187.106/32"
-}
-variable "ip_tim" {
-  default = "24.134.75.132/32"
-}
-variable "ip_github" {
-  default = "192.30.252.0/22"
 }
 variable "ip_all" {
   default = "0.0.0.0/0"
