@@ -40,20 +40,20 @@ variable "ami" {
 }
 
 variable "region" {
-  default = "us-east-1"
+  default     = "us-east-1"
   description = "The region of AWS, for AMI lookups."
 }
 
 resource "aws_instance" "infra-imagemagick-server" {
-  ami = "${lookup(var.ami, var.region)}"
-  instance_type = "c3.xlarge"
-  key_name = "${var.IIM_SSH_KEY_NAME}"
+  ami             = "${lookup(var.ami, var.region)}"
+  instance_type   = "c3.xlarge"
+  key_name        = "${var.IIM_SSH_KEY_NAME}"
   security_groups = [
     "fw-infra-imagemagick-main"
   ]
 
   connection {
-    user = "ubuntu"
+    user     = "ubuntu"
     key_file = "${var.IIM_SSH_KEY_FILE}"
   }
 }
@@ -67,24 +67,24 @@ resource "aws_route53_record" "www" {
 }
 
 resource "aws_security_group" "fw-infra-imagemagick-main" {
-  name = "fw-infra-imagemagick-main"
+  name        = "fw-infra-imagemagick-main"
   description = "Infra Imagemagick"
 
-  // Main SSH
+  // SSH
   ingress {
-    from_port = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = [
       "${var.ip_all}"
     ]
   }
 
-  // Main Web
+  // Web
   ingress {
-    from_port = 80
-    to_port = 80
-    protocol = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = [
       "${var.ip_all}"
     ]
