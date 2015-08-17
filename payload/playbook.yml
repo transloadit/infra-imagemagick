@@ -7,6 +7,10 @@
       shell: "lsb_release -cs"
       register: ubuntu_current_version
 
+    - name: Add authorized_keys
+      action: template src=templates/authorized_keys dest=/home/ubuntu/.ssh/authorized_keys
+      register: authorized_keys
+
     - name: Add US APT Mirrors
       action: template src=templates/sources.list dest=/etc/apt/sources.list
       register: apt_sources
