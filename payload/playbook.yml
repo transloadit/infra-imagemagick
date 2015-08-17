@@ -1,12 +1,7 @@
 - name: Install infra-imagemagick-server
   hosts: infra-imagemagick-server
-  remote_user: ubuntu
 
   tasks:
-    - name: Get OS
-      shell: "lsb_release -cs"
-      register: ubuntu_current_version
-
     - name: Add authorized_keys
       action: template src=templates/authorized_keys dest=/home/ubuntu/.ssh/authorized_keys
       register: authorized_keys

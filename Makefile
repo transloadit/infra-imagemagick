@@ -46,6 +46,10 @@ backup:
 restore:
 	source env.sh && ./control.sh restore
 
+.PHONY: facts
+facts:
+	source env.sh && ./control.sh facts
+
 .PHONY: console
 console:
 	source env.sh && ./control.sh remote

@@ -61,6 +61,7 @@ sudo -HE CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install --upg
 
 ## Todo
 
+- [ ] authorized_keys shoul be composed of individual files
 - [ ] Auto install of Ansible
 - [ ] Auto install of terraform-inventory
 - [ ] Tailormade packages/config

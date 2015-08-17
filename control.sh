@@ -187,6 +187,18 @@ if [ "${step}" = "remote" ]; then
   remote ${@:2}
   exit ${?}
 fi
+if [ "${step}" = "facts" ]; then
+  ANSIBLE_HOST_KEY_CHECKING=False \
+  TF_STATE="${__statefile}" \
+    ansible all \
+      --user="${IIM_SSH_USER}" \
+      --private-key="${IIM_SSH_KEY_FILE}" \
+      --inventory-file="$(which terraform-inventory)" \
+      --module-name=setup \
+      --args='filter=ansible_*'
+
+  exit ${?}
+fi
 if [ "${step}" = "backup" ]; then
   syncDown "/var/lib/jenkins/" "${__dir}/payload/templates/"
   exit ${?}
@@ -302,9 +314,11 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
     ANSIBLE_HOST_KEY_CHECKING=False \
     TF_STATE="${__statefile}" \
       ansible-playbook \
+        --user="${IIM_SSH_USER}" \
+        --private-key="${IIM_SSH_KEY_FILE}" \
+        --inventory-file="$(which terraform-inventory)" \
         --sudo \
-        --inventory-file="$(which terraform-inventory)" "${__playbookfile}" \
-        --private-key "${IIM_SSH_KEY_FILE}"
+      "${__playbookfile}"
 
     # inParallel "remote" "bash -c \"source ~/payload/env/config.sh && sudo -E bash ~/payload/install.sh\""
     processed="${processed} ${action}" && continue
