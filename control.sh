@@ -13,7 +13,7 @@
 #    - launch : Launches virtual machines at a provider (if needed) using Terraform's ./infra.tf
 #    - install: Runs Ansible to install software packages & configuration templates
 #    - upload : Upload the application
-#    - setup  : Runs the ./payload/setup.sh remotely, installing app dependencies and starting it
+#    - setup  : Runs the ./playbook/setup.sh remotely, installing app dependencies and starting it
 #    - show   : Displays active platform
 #  - Takes an optional 2nd argument: "done". If it's set, only 1 step will execute
 #  - Will cycle through all subsequential steps. So if you choose 'upload', 'setup' will
@@ -47,12 +47,12 @@ __base="$(basename ${__file} .sh)"
 __rootdir="${__dir}"
 __terraformDir="${__rootdir}/terraform"
 __envdir="${__rootdir}/envs/${DEPLOY_ENV}"
-__payloaddir="${__rootdir}/payload"
+__playbookdir="${__rootdir}/playbook"
 __terraformExe="${__terraformDir}/terraform"
 
 __planfile="${__envdir}/terraform.plan"
 __statefile="${__envdir}/terraform.tfstate"
-__playbookfile="${__payloaddir}/playbook.yml"
+__playbookfile="${__playbookdir}/main.yml"
 
 __terraformVersion="0.6.3"
 
@@ -200,7 +200,7 @@ if [ "${step}" = "facts" ]; then
   exit ${?}
 fi
 if [ "${step}" = "backup" ]; then
-  syncDown "/var/lib/jenkins/" "${__dir}/payload/templates/"
+  syncDown "/var/lib/jenkins/" "${__dir}/playbook/templates/"
   exit ${?}
 fi
 if [ "${step}" = "restore" ]; then
@@ -260,7 +260,9 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
       export IIM_SSH_KEYPUB_FINGERPRINT="$(ssh-keygen -lf ${IIM_SSH_KEYPUB_FILE} | awk '{print $2}')"
     fi
     if [ ! -f "${IIM_SSH_KEYPUB_FILE}" ]; then
+      chmod 600 "${TSD_SSH_KEY_FILE}" || true
       ssh-keygen -yf "${IIM_SSH_KEY_FILE}" > "${IIM_SSH_KEYPUB_FILE}"
+      chmod 600 "${TSD_SSH_KEYPUB_FILE}" || true
     fi
 
     processed="${processed} ${action}" && continue
@@ -302,8 +304,9 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
       sleep ${IIM_VERIFY_TIMEOUT}
       # exit 1
       ${__terraformExe} apply ${__planfile}
-      git commit -m "Save infra state" "${__statefile}" || true
-      git commit -m "Save infra state" "${__statefile}.backup" || true
+      git add "${__statefile}" || true
+      git add "${__statefile}.backup" || true
+      git commit -m "Save infra state" || true
     else
       echo "Skipping, no changes. "
     fi
@@ -320,7 +323,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
         --sudo \
       "${__playbookfile}"
 
-    # inParallel "remote" "bash -c \"source ~/payload/env/config.sh && sudo -E bash ~/payload/install.sh\""
+    # inParallel "remote" "bash -c \"source ~/playbook/env/config.sh && sudo -E bash ~/playbook/install.sh\""
     processed="${processed} ${action}" && continue
   fi
 

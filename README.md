@@ -12,14 +12,14 @@ This repository can create an ImageMagick server from scratch, following this fl
  - launch : Launches virtual machines at a provider (if needed) using Terraform's ./infra.tf
  - install: Runs Ansible to install software packages & configuration templates
  - upload : Upload the application
- - setup  : Runs the ./payload/setup.sh remotely, installing app dependencies and starting it
+ - setup  : Runs the ./playbook/setup.sh remotely, installing app dependencies and starting it
  - show   : Displays active platform
 ```
 
 ## Important files
 
  - [envs/production/infra.tf](envs/production/infra.tf) responsible for creating server/ram/cpu/dns
- - [payload/playbook.yml](payload/playbook.yml) responsible for installing APT packages
+ - [playbook/playbook.yml](playbook/playbook.yml) responsible for installing APT packages
  - [control.sh](control.sh) executes each step of the flow in a logical order. Relies on Terraform and Ansible.
  - [Makefile](Makefile) provides convenience shortcuts such as `make deploy`. [Bash autocomplete](http://blog.jeffterrace.com/2012/09/bash-completion-for-mac-os-x.html) makes this sweet.
  - [env.example.sh](env.example.sh) should be copied to `env.sh` and contains the secret keys to the infra provider (amazon, google, digitalocean, etc). These keys are necessary to change infra, but not packers & config, as the SSH keys are included in this repo
@@ -80,7 +80,7 @@ sudo -HE pip install --upgrade ansible
 
 ## Todo
 
-- [ ] authorized_keys shoul be composed of individual files
+- [x] authorized_keys should be composed of individual files
 - [ ] Auto install of Ansible
 - [ ] Auto install of terraform-inventory
 - [ ] Tailormade packages/config
