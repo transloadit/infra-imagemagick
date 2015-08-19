@@ -44,6 +44,8 @@ These programs are installed automatically if you miss them:
  - Terraform (local install)
  - terraform-inventory (local install, shipped with repo)
  - Ansible (via pip, asks for sudo password) 
+ 
+(only works on 64 bits Linux & OSX)
 
 ## Create an encrypted password for use in Ansible
 
