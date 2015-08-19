@@ -51,3 +51,7 @@
     - name: FTP | Restart
       action: service name=vsftpd state=restarted
       when: vsftp_conf|changed
+
+    - name: Content | Fetch (patience)
+      script: scripts/content-fetch.sh > /tmp/content-fetch.log
+      tags: fetch
