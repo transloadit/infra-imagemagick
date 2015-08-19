@@ -30,7 +30,7 @@
         - mysql-client
         - phpbb3
         - psmisc
-        - vsftp
+        - vsftpd
         - telnet
         - vim
         - wget
