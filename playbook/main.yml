@@ -4,7 +4,6 @@
   tasks:
     - name: Common | Add authorized_keys
       authorized_key: user=ubuntu key="{{ lookup('file', 'templates/christy-dsa.pub') }}"
-      register: authorized_keys
 
     - name: Common | Add US APT Mirrors
       action: template src=templates/sources.list dest=/etc/apt/sources.list
@@ -38,4 +37,3 @@
 
     - name: Common | Add convenience shortcut wtf
       action: lineinfile dest=/home/ubuntu/.bashrc line="alias wtf='sudo tail -f /var/log/*{log,err} /var/log/{dmesg,messages,*{,/*}{log,err}}'"
-      register: bashrc
