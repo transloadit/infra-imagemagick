@@ -55,6 +55,12 @@ If you only want to run a particular Ansible job, you can use tags. For example:
 IIM_ANSIBLE_TAGS=fetch make deploy
 ```
 
+If you want to deploy with an unclean Git dir, use `unsafe` variants:
+
+```bash
+make deploy-unsafe
+```
+
 ## Create an encrypted password for use in Ansible
 
 ### Linux 
