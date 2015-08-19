@@ -27,6 +27,13 @@
 # Authors:
 #
 #  - Kevin van Zonneveld <kevin@transloadit.com>
+#
+# Changelog:
+#
+#  - 2015-08-19 refactored casing
+#  - 2015-08-19 auto-install of terraform-inventory
+#  - 2015-08-19 auto-install of Ansible
+#  - 2015-08-19 quoting of all path vars (so they work with spaces)
 
 set -o pipefail
 set -o errexit
