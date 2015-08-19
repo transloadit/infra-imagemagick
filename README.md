@@ -45,19 +45,6 @@ as you see this is a very powerful way to set up many more servers, or deal with
 
 Installed automatically by `control.sh prepare` if missing.
 
-### terraform-inventory
-
-> Passes the hosts that Terraform created to Ansible.
-> Parses state file, converts that to Ansible inventory.
-
-**On OSX**
-
-brew install https://raw.github.com/adammck/terraform-inventory/master/homebrew/terraform-inventory.rb
-
-**On Linux**
-
-Either compile the Go build, or use https://github.com/Homebrew/linuxbrew and `brew install` as well.
-
 ### Ansible
 
 > A pragmatic, standardized way of provisioning servers with software & configuration.
@@ -76,6 +63,21 @@ sudo -HE CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install --upg
 sudo -HE easy_install pip
 sudo -HE pip install --upgrade pip
 sudo -HE pip install --upgrade ansible
+```
+
+## Create an encrypted password for use in Ansible
+
+### Linux 
+
+```bash
+mkpasswd --method=SHA-512
+```
+
+### OSX 
+
+```bash
+pip install --upgrade passlib
+python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt(getpass.getpass())"
 ```
 
 ## Todo

@@ -80,6 +80,16 @@ resource "aws_security_group" "fw-infra-imagemagick-main" {
       "${var.ip_all}"
     ]
   }
+
+  // Ftp
+  ingress {
+    from_port   = 21
+    to_port     = 21
+    protocol    = "tcp"
+    cidr_blocks = [
+      "${var.ip_all}"
+    ]
+  }
 }
 
 output "public_address" {

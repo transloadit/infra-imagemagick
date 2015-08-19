@@ -3,7 +3,7 @@
 *.pid
 node_modules
 npm-debug.log
-terraform/
+bin/terraform/
 playbook/bash3boilerplate/
 envs/production/terraform.plan
 env.sh

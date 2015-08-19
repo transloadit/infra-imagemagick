@@ -44,17 +44,29 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename ${__file} .sh)"
 
-__rootdir="${__dir}"
-__terraformDir="${__rootdir}/terraform"
-__envdir="${__rootdir}/envs/${DEPLOY_ENV}"
-__playbookdir="${__rootdir}/playbook"
-__terraformExe="${__terraformDir}/terraform"
-
-__planfile="${__envdir}/terraform.plan"
-__statefile="${__envdir}/terraform.tfstate"
-__playbookfile="${__playbookdir}/main.yml"
+__os="linux"
+if [[ "${OSTYPE}" == "darwin"* ]]; then
+  __os="darwin"
+fi
+__arch="amd64"
 
 __terraformVersion="0.6.3"
+__terraformInventoryVersion="0.5"
+
+__rootDir="${__dir}"
+__binDir="${__rootDir}/bin"
+__terraformDir="${__binDir}/terraform"
+__envDir="${__rootDir}/envs/${DEPLOY_ENV}"
+__playbookDir="${__rootDir}/playbook"
+__terraformExe="${__terraformDir}/terraform"
+__terraformInventoryExe="${__binDir}/terraform-inventory-${__terraformInventoryVersion}-${__os}-${__arch}"
+
+__planFile="${__envDir}/terraform.plan"
+__stateFile="${__envDir}/terraform.tfstate"
+__playbookFile="${__playbookDir}/main.yml"
+
+
+
 
 ### Functions
 ####################################################################################
@@ -193,7 +205,7 @@ if [ "${step}" = "facts" ]; then
     ansible all \
       --user="${IIM_SSH_USER}" \
       --private-key="${IIM_SSH_KEY_FILE}" \
-      --inventory-file="$(which terraform-inventory)" \
+      --inventory-file="${__terraformInventoryExe}" \
       --module-name=setup \
       --args='filter=ansible_*'
 
@@ -224,24 +236,17 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   echo "--> ${IIM_HOSTNAME} - ${action}"
 
   if [ "${action}" = "prepare" ]; then
-    os="linux"
-    if [[ "${OSTYPE}" == "darwin"* ]]; then
-      os="darwin"
-    fi
-
     # Install brew/wget on OSX
-    if [ "${os}" = "darwin" ]; then
+    if [ "${__os}" = "darwin" ]; then
       [ -z "$(which brew 2>/dev/null)" ] && ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
       [ -z "$(which wget 2>/dev/null)" ] && brew install wget
     fi
 
     # Install Terraform
-    arch="amd64"
-    zipFile="terraform_${__terraformVersion}_${os}_${arch}.zip"
-    url="https://dl.bintray.com/mitchellh/terraform/${zipFile}"
-    dir="${__terraformDir}"
-    mkdir -p "${dir}"
-    pushd "${dir}" > /dev/null
+    mkdir -p "${__terraformDir}"
+    pushd "${__terraformDir}" > /dev/null
+      zipFile="terraform_${__terraformVersion}_${__os}_${__arch}.zip"
+      url="https://dl.bintray.com/mitchellh/terraform/${zipFile}"
       if [ "$(echo $("${__terraformExe}" version))" != "Terraform v${__terraformVersion}" ]; then
         rm -f "${zipFile}" || true
         wget "${url}"
@@ -320,7 +325,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
       ansible-playbook \
         --user="${IIM_SSH_USER}" \
         --private-key="${IIM_SSH_KEY_FILE}" \
-        --inventory-file="$(which terraform-inventory)" \
+        --inventory-file="${__terraformInventoryExe}" \
         --sudo \
       "${__playbookfile}"
 
