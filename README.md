@@ -47,7 +47,21 @@ These programs are installed automatically if you miss them:
  
 (only works on 64 bits Linux & OSX)
 
-## Examples
+## Example
+
+I enabled FTP support in this commit:
+https://github.com/transloadit/infra-imagemagick/commit/eac9bd9261a9b5c8e84ef20f72997f2ea2d067af
+and typed `make deploy-infra` as it involved changing firewall settings, we do that at Amazon.
+
+I also made fetching content part of the setup script:
+https://github.com/transloadit/infra-imagemagick/commit/4e02c1b31eade7a05f5351329df202e39fb33505
+and typed `make deploy` as it's just a provisioning change (this one is still running as we speak, much to download)
+
+I mistakingly made a private FTP server. I changed that in this commit:
+https://github.com/transloadit/infra-imagemagick/commit/1aecde6aaed31e03299a55fa3e3d1b8b7f85aeab
+and typed `make deploy`
+
+## Tips
 
 If you only want to run a particular Ansible job, you can use tags. For example:
 
