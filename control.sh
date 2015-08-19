@@ -70,6 +70,7 @@ __terraformExe="${__terraformDir}/terraform"
 __terraformInventoryExe="${__binDir}/terraform-inventory-${__terraformInventoryVersion}-${__os}-${__arch}"
 __ansibleExe="ansible"
 __ansiblePlaybookExe="ansible-playbook"
+__ansibleCfg="${__rootDir}/ansible.cfg"
 
 __planFile="${__envDir}/terraform.plan"
 __stateFile="${__envDir}/terraform.tfstate"
@@ -253,7 +254,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
     fi
 
     # Install Ansible
-    if [ "$(echo $("${__ansibleExe}" --version |head -n1))" != "Tansible 1.9.2" ]; then
+    if [ "$(echo $("${__ansibleExe}" --version |head -n1))" != "ansible 1.9.2" ]; then
       echo "--> ${IIM_HOSTNAME} - installing Ansible v${__ansibleVersion}"
       set -x
       sudo easy_install pip
@@ -348,7 +349,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "install" ]; then
-    ANSIBLE_CONFIG="${__rootDir}/ansible.cfg" \
+    ANSIBLE_CONFIG="${__ansibleCfg}" \
     ANSIBLE_HOST_KEY_CHECKING=False \
     TF_STATE="${__stateFile}" \
       "${__ansiblePlaybookExe}" \
