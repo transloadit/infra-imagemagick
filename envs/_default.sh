@@ -36,6 +36,11 @@ export IIM_HOSTNAME="$(uname -n)"
 export IIM_SERVICE_USER="www-data"
 export IIM_SERVICE_GROUP="www-data"
 
+# See readme for how to update pass
+export IIM_FTP_USER="webdev"
+#      IIM_FTP_PASS <-- is set in ./env.sh, which is kept out of Git
+export IIM_FTP_PASS_ENC='$6$rounds=656000$8ACvi9Ng2HX6wYPA$VAxXDlN6bqwsyOQ/U8lwe9OIFBpuFP.1UcuGrvuH/0cQpk4flb9liMwYfIqctdgmJabq0QevycGnUP9yMD5SV.'
+
 export IIM_SSH_KEY_NAME="infra-imagemagick"
 export IIM_SSH_USER="ubuntu"
 export IIM_SSH_EMAIL="hello@transloadit.com"

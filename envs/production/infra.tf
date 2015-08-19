@@ -83,8 +83,18 @@ resource "aws_security_group" "fw-infra-imagemagick-main" {
 
   // Ftp
   ingress {
-    from_port   = 21
+    from_port   = 20
     to_port     = 21
+    protocol    = "tcp"
+    cidr_blocks = [
+      "${var.ip_all}"
+    ]
+  }
+
+  // Ftp Passive
+  ingress {
+    from_port   = 1024
+    to_port     = 1048
     protocol    = "tcp"
     cidr_blocks = [
       "${var.ip_all}"
