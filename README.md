@@ -64,8 +64,8 @@ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_c
 
 ## Todo
 
-- [x] authorized_keys should be composed of individual files
-- [ ] Auto install of Ansible
-- [ ] Auto install of terraform-inventory
 - [ ] Tailormade packages/config
 - [ ] State backup/restore (db, git, etc)
+- [x] authorized_keys should be composed of individual files
+- [x] Auto install of Ansible
+- [x] Auto install of terraform-inventory
