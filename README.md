@@ -92,6 +92,7 @@ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_c
 
 ## Todo
 
+- [ ] Instance contains an 8GB EBS device. Should be way more!
 - [ ] Tailormade packages/config
 - [ ] State backup/restore (db, git, etc)
 - [x] authorized_keys should be composed of individual files
