@@ -39,31 +39,11 @@ as you see this is a very powerful way to set up many more servers, or deal with
 
 ## Prerequisites
 
-### Terraform
+These programs are installed automatically if you miss them:
 
-> Terraform can set up machines & other resources at nearly all cloud providers
-
-Installed automatically by `control.sh prepare` if missing.
-
-### Ansible
-
-> A pragmatic, standardized way of provisioning servers with software & configuration.
-
-**On OSX**
-
-```bash
-sudo -HE easy_install pip
-sudo -HE pip install --upgrade pip
-sudo -HE CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install --upgrade ansible
-```
-
-**On Linux**
-
-```bash
-sudo -HE easy_install pip
-sudo -HE pip install --upgrade pip
-sudo -HE pip install --upgrade ansible
-```
+ - Terraform (local install)
+ - terraform-inventory (local install, shipped with repo)
+ - Ansible (via pip, asks for sudo password) 
 
 ## Create an encrypted password for use in Ansible
 

@@ -50,6 +50,7 @@ if [[ "${OSTYPE}" == "darwin"* ]]; then
 fi
 __arch="amd64"
 
+__ansibleVersion="1.9.2"
 __terraformVersion="0.6.3"
 __terraformInventoryVersion="0.5"
 
@@ -60,6 +61,8 @@ __envDir="${__rootDir}/envs/${DEPLOY_ENV}"
 __playbookDir="${__rootDir}/playbook"
 __terraformExe="${__terraformDir}/terraform"
 __terraformInventoryExe="${__binDir}/terraform-inventory-${__terraformInventoryVersion}-${__os}-${__arch}"
+__ansibleExe="ansible"
+__ansiblePlaybookExe="ansible-playbook"
 
 __planFile="${__envDir}/terraform.plan"
 __stateFile="${__envDir}/terraform.tfstate"
@@ -202,7 +205,7 @@ fi
 if [ "${step}" = "facts" ]; then
   ANSIBLE_HOST_KEY_CHECKING=False \
   TF_STATE="${__stateFile}" \
-    ansible all \
+    "${__ansibleExe}" all \
       --user="${IIM_SSH_USER}" \
       --private-key="${IIM_SSH_KEY_FILE}" \
       --inventory-file="${__terraformInventoryExe}" \
@@ -242,12 +245,31 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
       [ -z "$(which wget 2>/dev/null)" ] && brew install wget
     fi
 
+    # Install Ansible
+    if [ "$(echo $("${__ansibleExe}" --version |head -n1))" != "Tansible 1.9.2" ]; then
+      echo "--> ${IIM_HOSTNAME} - installing Ansible v${__ansibleVersion}"
+      set -x
+      sudo easy_install pip
+      sudo pip install --upgrade pip
+      set +x
+      if [ "${__os}" = "darwin" ]; then
+        set -x
+        sudo env CFLAGS=-Qunused-arguments CPPFLAGS=-Qunused-arguments pip install --upgrade ansible==1.9.2
+        set +x
+      else
+        set -x
+        sudo pip install --upgrade ansible=1.9.2
+        set +x
+      fi
+    fi
+
     # Install Terraform
     mkdir -p "${__terraformDir}"
     pushd "${__terraformDir}" > /dev/null
-      zipFile="terraform_${__terraformVersion}_${__os}_${__arch}.zip"
-      url="https://dl.bintray.com/mitchellh/terraform/${zipFile}"
       if [ "$(echo $("${__terraformExe}" version))" != "Terraform v${__terraformVersion}" ]; then
+      echo "--> ${IIM_HOSTNAME} - installing Terraform v{__terraformVersion}"
+        zipFile="terraform_${__terraformVersion}_${__os}_${__arch}.zip"
+        url="https://dl.bintray.com/mitchellh/terraform/${zipFile}"
         rm -f "${zipFile}" || true
         wget "${url}"
         unzip -o "${zipFile}"
@@ -284,7 +306,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   terraformArgs="${terraformArgs} -var IIM_SSH_KEY_NAME=${IIM_SSH_KEY_NAME}"
 
   if [ "${action}" = "init" ]; then
-    # if [ ! -f ${__stateFile} ]; then
+    # if [ ! -f "${__stateFile}" ]; then
     #   echo "Nothing to refresh yet."
     # else
     bash -c "${__terraformExe} refresh ${terraformArgs}" || true
@@ -292,8 +314,8 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "plan" ]; then
-    rm -f ${__planFile}
-    bash -c "${__terraformExe} plan -refresh=false ${terraformArgs} -out ${__planFile}"
+    rm -f "${__planFile}"
+    bash -c ""${__terraformExe}" plan -refresh=false ${terraformArgs} -out "${__planFile}""
     processed="${processed} ${action}" && continue
   fi
 
@@ -303,7 +325,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "launch" ]; then
-    if [ -f ${__planFile} ]; then
+    if [ -f "${__planFile}" ]; then
       echo "--> Press CTRL+C now if you are unsure! Executing plan in ${IIM_VERIFY_TIMEOUT}s..."
       [ "${dryRun}" -eq 1 ] && echo "--> Dry run break" && exit 1
       sleep ${IIM_VERIFY_TIMEOUT}
@@ -322,7 +344,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
     ANSIBLE_CONFIG="${__rootDir}/ansible.cfg" \
     ANSIBLE_HOST_KEY_CHECKING=False \
     TF_STATE="${__stateFile}" \
-      ansible-playbook \
+      "${__ansiblePlaybookExe}" \
         --user="${IIM_SSH_USER}" \
         --private-key="${IIM_SSH_KEY_FILE}" \
         --inventory-file="${__terraformInventoryExe}" \
@@ -345,7 +367,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
 
   if [ "${action}" = "show" ]; then
     echo "http://${IIM_DOMAIN}:${IIM_APP_PORT}"
-    # for host in $(${__terraformExe} output public_addresses); do
+    # for host in $("${__terraformExe}" output public_addresses); do
     #   echo " - http://${host}:${IIM_APP_PORT}"
     # done
     processed="${processed} ${action}" && continue
