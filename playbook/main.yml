@@ -39,15 +39,3 @@
     - name: Common | Add convenience shortcut wtf
       action: lineinfile dest=/home/ubuntu/.bashrc line="alias wtf='sudo tail -f /var/log/*{log,err} /var/log/{dmesg,messages,*{,/*}{log,err}}'"
       register: bashrc
-
-    # - name: Tus | Download tusd
-    #   action: foo bar
-    #   register: foo bar
-    #
-    # - name: Tus | Install upstart/systemd file
-    #   action: foo bar
-    #   register: foo bar
-    #
-    # - name: Tus | Start service
-    #   action: foo bar
-    #   register: foo bar
