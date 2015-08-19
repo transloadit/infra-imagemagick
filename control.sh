@@ -314,6 +314,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "install" ]; then
+    ANSIBLE_CONFIG="${__rootdir}/ansible.cfg" \
     ANSIBLE_HOST_KEY_CHECKING=False \
     TF_STATE="${__statefile}" \
       ansible-playbook \
