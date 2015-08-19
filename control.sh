@@ -73,8 +73,8 @@ __playbookFile="${__playbookDir}/main.yml"
 
 function syncUp() {
   [ -z "${host:-}" ] && host="$(${__terraformExe} output public_address)"
-  chmod 600 ${IIM_SSH_KEYPUB_FILE}
-  chmod 600 ${IIM_SSH_KEY_FILE}
+  chmod 600 "${IIM_SSH_KEYPUB_FILE}"
+  chmod 600 "${IIM_SSH_KEY_FILE}"
   rsync \
    --archive \
    --delete \
@@ -100,8 +100,8 @@ function syncUp() {
 
 function syncDown() {
   [ -z "${host:-}" ] && host="$(${__terraformExe} output public_address)"
-  chmod 600 ${IIM_SSH_KEYPUB_FILE}
-  chmod 600 ${IIM_SSH_KEY_FILE}
+  chmod 600 "${IIM_SSH_KEYPUB_FILE}"
+  chmod 600 "${IIM_SSH_KEY_FILE}"
   rsync \
    --archive \
    --delete \
@@ -146,8 +146,8 @@ function syncDown() {
 
 function remote() {
   [ -z "${host:-}" ] && host="$(${__terraformExe} output public_address)"
-  chmod 600 ${IIM_SSH_KEYPUB_FILE}
-  chmod 600 ${IIM_SSH_KEY_FILE}
+  chmod 600 "${IIM_SSH_KEYPUB_FILE}"
+  chmod 600 "${IIM_SSH_KEY_FILE}"
   ssh ${host} \
     -i "${IIM_SSH_KEY_FILE}" \
     -l ${IIM_SSH_USER} \
@@ -193,7 +193,7 @@ enabled=0
 ### Runtime
 ####################################################################################
 
-pushd "${__envdir}" > /dev/null
+pushd "${__envDir}" > /dev/null
 
 if [ "${step}" = "remote" ]; then
   remote ${@:2}
@@ -201,7 +201,7 @@ if [ "${step}" = "remote" ]; then
 fi
 if [ "${step}" = "facts" ]; then
   ANSIBLE_HOST_KEY_CHECKING=False \
-  TF_STATE="${__statefile}" \
+  TF_STATE="${__stateFile}" \
     ansible all \
       --user="${IIM_SSH_USER}" \
       --private-key="${IIM_SSH_KEY_FILE}" \
@@ -212,7 +212,7 @@ if [ "${step}" = "facts" ]; then
   exit ${?}
 fi
 if [ "${step}" = "backup" ]; then
-  syncDown "/var/lib/jenkins/" "${__dir}/playbook/templates/"
+  # syncDown "/var/lib/mysql" "${__dir}/data/"
   exit ${?}
 fi
 if [ "${step}" = "restore" ]; then
@@ -284,7 +284,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   terraformArgs="${terraformArgs} -var IIM_SSH_KEY_NAME=${IIM_SSH_KEY_NAME}"
 
   if [ "${action}" = "init" ]; then
-    # if [ ! -f ${__statefile} ]; then
+    # if [ ! -f ${__stateFile} ]; then
     #   echo "Nothing to refresh yet."
     # else
     bash -c "${__terraformExe} refresh ${terraformArgs}" || true
@@ -292,8 +292,8 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "plan" ]; then
-    rm -f ${__planfile}
-    bash -c "${__terraformExe} plan -refresh=false ${terraformArgs} -out ${__planfile}"
+    rm -f ${__planFile}
+    bash -c "${__terraformExe} plan -refresh=false ${terraformArgs} -out ${__planFile}"
     processed="${processed} ${action}" && continue
   fi
 
@@ -303,14 +303,14 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "launch" ]; then
-    if [ -f ${__planfile} ]; then
+    if [ -f ${__planFile} ]; then
       echo "--> Press CTRL+C now if you are unsure! Executing plan in ${IIM_VERIFY_TIMEOUT}s..."
       [ "${dryRun}" -eq 1 ] && echo "--> Dry run break" && exit 1
       sleep ${IIM_VERIFY_TIMEOUT}
       # exit 1
-      ${__terraformExe} apply ${__planfile}
-      git add "${__statefile}" || true
-      git add "${__statefile}.backup" || true
+      "${__terraformExe}" apply "${__planFile}"
+      git add "${__stateFile}" || true
+      git add "${__stateFile}.backup" || true
       git commit -m "Save infra state" || true
     else
       echo "Skipping, no changes. "
@@ -319,15 +319,15 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "install" ]; then
-    ANSIBLE_CONFIG="${__rootdir}/ansible.cfg" \
+    ANSIBLE_CONFIG="${__rootDir}/ansible.cfg" \
     ANSIBLE_HOST_KEY_CHECKING=False \
-    TF_STATE="${__statefile}" \
+    TF_STATE="${__stateFile}" \
       ansible-playbook \
         --user="${IIM_SSH_USER}" \
         --private-key="${IIM_SSH_KEY_FILE}" \
         --inventory-file="${__terraformInventoryExe}" \
         --sudo \
-      "${__playbookfile}"
+      "${__playbookFile}"
 
     # inParallel "remote" "bash -c \"source ~/playbook/env/config.sh && sudo -E bash ~/playbook/install.sh\""
     processed="${processed} ${action}" && continue
