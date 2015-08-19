@@ -47,6 +47,14 @@ These programs are installed automatically if you miss them:
  
 (only works on 64 bits Linux & OSX)
 
+## Examples
+
+If you only want to run a particular Ansible job, you can use tags. For example:
+
+```bash
+IIM_ANSIBLE_TAGS=fetch make deploy
+```
+
 ## Create an encrypted password for use in Ansible
 
 ### Linux 

@@ -349,10 +349,15 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "install" ]; then
+    tags=""
+    if [ -n "${IIM_ANSIBLE_TAGS}" ]; then
+      tags="--tags="${IIM_ANSIBLE_TAGS}""
+    fi
     ANSIBLE_CONFIG="${__ansibleCfg}" \
     ANSIBLE_HOST_KEY_CHECKING=False \
     TF_STATE="${__stateFile}" \
       "${__ansiblePlaybookExe}" \
+        ${tags} \
         --user="${IIM_SSH_USER}" \
         --private-key="${IIM_SSH_KEY_FILE}" \
         --inventory-file="${__terraformInventoryExe}" \

@@ -49,4 +49,6 @@ export IIM_SSH_KEYPUB_FILE="${__envdir}/infra-imagemagick.pub"
 export IIM_SSH_KEYPUB=$(echo "$(cat "${IIM_SSH_KEYPUB_FILE}" 2>/dev/null)") || true
 export IIM_SSH_KEYPUB_FINGERPRINT="$(ssh-keygen -lf ${IIM_SSH_KEYPUB_FILE} | awk '{print $2}')"
 
+export IIM_ANSIBLE_TAGS="${IIM_ANSIBLE_TAGS:-}"
+
 export IIM_VERIFY_TIMEOUT=5
