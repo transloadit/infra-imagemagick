@@ -47,6 +47,10 @@ resource "aws_instance" "infra-imagemagick-server" {
     user     = "ubuntu"
     key_file = "${var.IIM_SSH_KEY_FILE}"
   }
+
+  tags {
+    Name = "${var.IIM_DOMAIN}"
+  }
 }
 
 resource "aws_route53_record" "www" {
