@@ -22,7 +22,12 @@ This repository can create an ImageMagick server from scratch, following this fl
  - [playbook/playbook.yml](playbook/playbook.yml) responsible for installing APT packages
  - [control.sh](control.sh) executes each step of the flow in a logical order. Relies on Terraform and Ansible.
  - [Makefile](Makefile) provides convenience shortcuts such as `make deploy`. [Bash autocomplete](http://blog.jeffterrace.com/2012/09/bash-completion-for-mac-os-x.html) makes this sweet.
- - [env.example.sh](env.example.sh) should be copied to `env.sh` and contains the secret keys to the infra provider (amazon, google, digitalocean, etc). These keys are necessary to change infra, but not packers & config, as the SSH keys are included in this repo
+ - [env.example.sh](env.example.sh) should be copied to `env.sh` and contains the secret keys to the infra provider (amazon, google, digitalocean, etc)
+ 
+Not included with this repo:
+
+ - `envs/production/infra-tusd.pem` - used to log in via SSH (`make console`)
+ - `env.sh` - contains secrets, such as keys to infra provider
 
 ## Demo
 
