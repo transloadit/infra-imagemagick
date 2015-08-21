@@ -26,7 +26,7 @@ provider "aws" {
 variable "ami" {
   // http://cloud-images.ubuntu.com/locator/ec2/
   default = {
-    us-east-1 = "ami-9bce7af0" // us-east-1	trusty	14.04 LTS	amd64	ebs-ssd	20150814 ami-9bce7af0
+    us-east-1 = "ami-fd378596" //	tosip-main-ec2-ebs200-v14.4.2	us-east-1	ebs
   }
 }
 
