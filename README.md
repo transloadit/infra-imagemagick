@@ -75,6 +75,12 @@ If you want to deploy with an unclean Git dir, use `unsafe` variants:
 make deploy-unsafe
 ```
 
+If you to SSH into the box
+
+```bash
+make console
+```
+
 ## Create an encrypted password for use in Ansible
 
 ### Linux 
