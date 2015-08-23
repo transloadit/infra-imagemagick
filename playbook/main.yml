@@ -3,19 +3,19 @@
 
   tasks:
     - name: Access | Add authorized_keys for user ubuntu
-      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/cristy-dsa.pub') }}"
+      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/cristy-dsa.pub.j2') }}"
 
     - name: Access | Add user cristy
       user: name=cristy home=/home/cristy shell=/bin/bash comment="Cristy" group=www-data
 
     - name: Access | Add authorized_keys for user cristy
-      authorized_key: user=cristy key="{{ lookup('file', 'templates/cristy-dsa.pub') }}"
+      authorized_key: user=cristy key="{{ lookup('file', 'templates/cristy-dsa.pub.j2') }}"
 
     - name: Common | Gather EC2 facts
       action: ec2_facts
 
     - name: Common | Add US APT Mirrors
-      action: template src=templates/sources.list dest=/etc/apt/sources.list
+      action: template src=templates/sources.list.j2 dest=/etc/apt/sources.list
       register: apt_sources
 
     - name: Common | Update APT
@@ -26,6 +26,7 @@
       apt: pkg={{ item }} state=present
       with_items:
         - apache2
+        - apt-file
         - apg
         - build-essential
         - curl
@@ -53,8 +54,23 @@
     - name: Web | Create webroot
       file: path=/var/www state=directory owner=webdev group=www-data mode=0775 recurse=yes
 
+    - name: Web | Apache Modules
+      apache2_module: state=present name={{ item }}
+      with_items:
+        - cgi
+        - perl
+      register: apache_modules
+
+    - name: Web | Apache Vhost Default
+      action: template src=templates/apache-vhost-default.j2 dest=/etc/apache2/sites-enabled/000-default.conf
+      register: apache_vhost
+
+    - name: Web | Restart
+      action: service name=vsftpd state=restarted
+      when: apache_modules|changed or apache_vhost|changed
+
     - name: FTP | Write config
-      action: template src=templates/vsftpd.conf dest=/etc/vsftpd.conf
+      action: template src=templates/vsftpd.conf.j2 dest=/etc/vsftpd.conf
       register: vsftp_conf
 
     - name: FTP | Restart
@@ -64,7 +80,7 @@
     - name: ImageMagick Development | Dev Packges
       apt: pkg={{ item }} state=present
       with_items:
-        - apache2
+        - cpanminus
         - fftw-dev
         - libdjvulibre-dev
         - libfontconfig-dev
@@ -72,6 +88,7 @@
         - libgs-dev
         - libjpeg-dev
         - liblcms-dev
+        - libperl-dev
         - liblqr-dev
         - liblzma-dev
         - libopenexr-dev
@@ -82,6 +99,12 @@
         - libwebp-dev
         - libwmf-dev
         - libxml2-dev
+
+    - name: ImageMagick Development | Perl Modules
+      cpanm: name={{ item }} notest=True
+      with_items:
+        - Image::Magick
+        - Digest::SHA3
 
     - name: Content | Upload Daily Mirror script
       copy: src=scripts/content-fetch.sh dest=/home/ubuntu/content-fetch.sh mode=0755 owner=ubuntu group=ubuntu
