@@ -12,6 +12,9 @@ variable "ip_cristy" {
 variable "ip_kevin" {
   default = "62.163.187.106/32"
 }
+variable "ip_marius" {
+  default = "84.146.0.0/16"
+}
 variable "ip_all" {
   default = "0.0.0.0/0"
 }
