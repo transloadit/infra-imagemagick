@@ -3,19 +3,19 @@
 
   tasks:
     - name: Access | Add authorized_keys for user ubuntu
-      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/cristy-dsa.pub') }}"
+      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/cristy-dsa.pub.j2') }}"
 
     - name: Access | Add user cristy
       user: name=cristy home=/home/cristy shell=/bin/bash comment="Cristy" group=www-data
 
     - name: Access | Add authorized_keys for user cristy
-      authorized_key: user=cristy key="{{ lookup('file', 'templates/cristy-dsa.pub') }}"
+      authorized_key: user=cristy key="{{ lookup('file', 'templates/cristy-dsa.pub.j2') }}"
 
     - name: Common | Gather EC2 facts
       action: ec2_facts
 
     - name: Common | Add US APT Mirrors
-      action: template src=templates/sources.list dest=/etc/apt/sources.list
+      action: template src=templates/sources.list.j2 dest=/etc/apt/sources.list
       register: apt_sources
 
     - name: Common | Update APT
@@ -55,7 +55,7 @@
       file: path=/var/www state=directory owner=webdev group=www-data mode=0775 recurse=yes
 
     - name: FTP | Write config
-      action: template src=templates/vsftpd.conf dest=/etc/vsftpd.conf
+      action: template src=templates/vsftpd.conf.j2 dest=/etc/vsftpd.conf
       register: vsftp_conf
 
     - name: FTP | Restart
