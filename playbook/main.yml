@@ -61,6 +61,9 @@
       action: service name=vsftpd state=restarted
       when: vsftp_conf|changed
 
+    - name: ImageMagick Development | PerlMagick
+      cpanm: name=Dancer notest=True
+
     - name: ImageMagick Development | Dev Packges
       apt: pkg={{ item }} state=present
       with_items:
@@ -72,6 +75,7 @@
         - libgs-dev
         - libjpeg-dev
         - liblcms-dev
+        - libperl-dev
         - liblqr-dev
         - liblzma-dev
         - libopenexr-dev
