@@ -55,6 +55,28 @@
       action: service name=vsftpd state=restarted
       when: vsftp_conf|changed
 
+    - name: Building ImageMagick | Dev Packges
+      apt: pkg={{ item }} state=present
+      with_items:
+        - apache2
+        - fftw-dev
+        - libdjvulibre-dev
+        - libfontconfig-dev
+        - libfreetype6-dev
+        - libgs-dev
+        - libjpeg-dev
+        - liblcms-dev
+        - liblqr-dev
+        - liblzma-dev
+        - libopenexr-dev
+        - libpango1.0-dev
+        - libpng-dev
+        - librsvg2-dev
+        - libtiff-dev
+        - libwebp-dev
+        - libwmf-dev
+        - libxml2-dev
+
     - name: Content | Fetch (patience)
       script: scripts/content-fetch.sh > /tmp/content-fetch.log
       tags: fetch
