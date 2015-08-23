@@ -89,6 +89,7 @@
       cpanm: name={{ item }} notest=True
       with_items:
         - Image::Magick
+        - Digest::SHA3
 
     - name: Content | Upload Daily Mirror script
       copy: src=scripts/content-fetch.sh dest=/home/ubuntu/content-fetch.sh mode=0755 owner=ubuntu group=ubuntu
