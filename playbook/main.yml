@@ -2,8 +2,14 @@
   hosts: infra-imagemagick-server
 
   tasks:
-    - name: Common | Add authorized_keys for Ubuntu user
-      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/christy-dsa.pub') }}"
+    - name: Access | Add authorized_keys for user ubuntu
+      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/cristy-dsa.pub') }}"
+
+    - name: Access | Add user cristy
+      user: name=cristy home=/home/cristy shell=/bin/bash comment="Cristy" group=www-data
+
+    - name: Access | Add authorized_keys for user cristy
+      authorized_key: user=cristy key="{{ lookup('file', 'templates/cristy-dsa.pub') }}"
 
     - name: Common | Gather EC2 facts
       action: ec2_facts
