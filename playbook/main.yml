@@ -54,6 +54,21 @@
     - name: Web | Create webroot
       file: path=/var/www state=directory owner=webdev group=www-data mode=0775 recurse=yes
 
+    - name: Web | Apache Modules
+      apache2_module: state=present name={{ item }}
+      with_items:
+        - cgi
+        - perl
+      register: apache_modules
+
+    - name: Web | Apache Vhost Default
+      action: template src=templates/apache-vhost-default.j2 dest=/etc/apache2/sites-enabled/000-default.conf
+      register: apache_vhost
+
+    - name: Web | Restart
+      action: service name=vsftpd state=restarted
+      when: apache_modules|changed or apache_vhost|changed
+
     - name: FTP | Write config
       action: template src=templates/vsftpd.conf.j2 dest=/etc/vsftpd.conf
       register: vsftp_conf
