@@ -71,7 +71,7 @@ and typed `make deploy`
 If you only want to run a particular Ansible job, you can use tags. For example:
 
 ```bash
-IIM_ANSIBLE_TAGS=fetch make deploy
+IIM_ANSIBLE_TAGS=content make deploy
 ```
 
 If you want to deploy with an unclean Git dir, use `unsafe` variants:
@@ -106,9 +106,9 @@ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_c
 - [ ] apache2 to support perl CGI scripts (test with http://imagemagick.transloadit.com/ImageMagick/MagickStudio/scripts/MagickStudio.cgi
 - [ ] apache2 goes to /var/www/html/ImageMagick for http://imagemagick.transloadit.com and / or transloadit.imagemagick.org
 - [ ] user cristy with the same public key as your ubuntu user
-- [ ] if it doesn't already, i need a daily mirror of the commands below
 - [ ] the latest ImageMagick needs to be installed (I can do this manually if needed)
 - [ ] State backup/restore (db, git, etc)?
+- [x] if it doesn't already, i need a daily mirror of the commands below
 - [x] lots of development packages installed fftw, djvu, fontconfig, freetype, gslib, jpeg, lcms, lqr, lzma, openexr, pango, png, rsvg, tiff, webp, wmf, and xml2 (required by ImageMagick)
 - [x] Instance contains an 8GB EBS device. Should be way more!
 - [x] authorized_keys should be composed of individual files

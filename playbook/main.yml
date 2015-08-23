@@ -77,6 +77,14 @@
         - libwmf-dev
         - libxml2-dev
 
-    - name: Content | Fetch (patience)
-      script: scripts/content-fetch.sh > /tmp/content-fetch.log
-      tags: fetch
+    - name: Content | Upload Daily Mirror script
+      copy: src=scripts/content-fetch.sh dest=/home/ubuntu/content-fetch.sh mode=0755 owner=ubuntu group=ubuntu
+      tags: content
+
+    - name: Content | Touch log of Daily Mirror script
+      file: path=/var/log/content-fetch.log state=touch owner=ubuntu group=ubuntu mode=644
+      tags: content
+
+    - name: Content | Install Daily Mirror script crontab
+      cron: name="Daily mirror" user="ubuntu" minute="0" hour="1" job="/home/ubuntu/content-fetch.sh > /var/log/content-fetch.log 2>&1"
+      tags: content
