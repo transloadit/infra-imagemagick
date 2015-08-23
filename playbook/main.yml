@@ -68,7 +68,6 @@
     - name: ImageMagick Development | Dev Packges
       apt: pkg={{ item }} state=present
       with_items:
-        - apache2
         - fftw-dev
         - libdjvulibre-dev
         - libfontconfig-dev
