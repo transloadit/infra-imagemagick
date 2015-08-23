@@ -7,3 +7,4 @@ bin/terraform/
 playbook/bash3boilerplate/
 envs/production/terraform.plan
 env.sh
+envs/production/*.pem
