@@ -55,7 +55,7 @@
       action: service name=vsftpd state=restarted
       when: vsftp_conf|changed
 
-    - name: Building ImageMagick | Dev Packges
+    - name: ImageMagick Development | Dev Packges
       apt: pkg={{ item }} state=present
       with_items:
         - apache2
