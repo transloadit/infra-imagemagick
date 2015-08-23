@@ -62,12 +62,10 @@
       action: service name=vsftpd state=restarted
       when: vsftp_conf|changed
 
-    - name: ImageMagick Development | PerlMagick
-      cpanm: name=Dancer notest=True
-
     - name: ImageMagick Development | Dev Packges
       apt: pkg={{ item }} state=present
       with_items:
+        - cpanminus
         - fftw-dev
         - libdjvulibre-dev
         - libfontconfig-dev
@@ -86,6 +84,11 @@
         - libwebp-dev
         - libwmf-dev
         - libxml2-dev
+
+    - name: ImageMagick Development | Perl Modules
+      cpanm: name={{ item }} notest=True
+      with_items:
+        - Image::Magick
 
     - name: Content | Upload Daily Mirror script
       copy: src=scripts/content-fetch.sh dest=/home/ubuntu/content-fetch.sh mode=0755 owner=ubuntu group=ubuntu
