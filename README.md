@@ -103,7 +103,7 @@ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_c
 
 ## Todo
 
-- [ ] apache2 to support perl CGI scripts (test with http://imagemagick.transloadit.com/ImageMagick/MagickStudio/scripts/MagickStudio.cgi
+- [x] apache2 to support perl CGI scripts (test with http://imagemagick.transloadit.com/ImageMagick/MagickStudio/scripts/MagickStudio.cgi
 - [ ] apache2 goes to /var/www/html/ImageMagick for http://imagemagick.transloadit.com and / or transloadit.imagemagick.org
 - [ ] the latest ImageMagick needs to be installed (I can do this manually if needed)
 - [ ] State backup/restore (db, git, etc)?
