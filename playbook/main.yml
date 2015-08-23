@@ -38,6 +38,9 @@
     - name: Common | Add convenience shortcut wtf
       action: lineinfile dest=/home/ubuntu/.bashrc line="alias wtf='sudo tail -f /var/log/*{log,err} /var/log/{dmesg,messages,*{,/*}{log,err}}'"
 
+    - name: Gather EC2 facts
+      action: ec2_facts
+
     - name: Web | Add webdev user for uploading www files
       user: name=webdev home=/var/www shell=/bin/bash comment="User for uploading www files" group=www-data password={{ lookup('env','IIM_FTP_PASS_ENC') }}
 
