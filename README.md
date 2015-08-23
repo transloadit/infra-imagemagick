@@ -23,17 +23,17 @@ This repository can create an ImageMagick server from scratch, following this fl
  - [control.sh](control.sh) executes each step of the flow in a logical order. Relies on Terraform and Ansible.
  - [Makefile](Makefile) provides convenience shortcuts such as `make deploy`. [Bash autocomplete](http://blog.jeffterrace.com/2012/09/bash-completion-for-mac-os-x.html) makes this sweet.
  - [env.example.sh](env.example.sh) should be copied to `env.sh` and contains the secret keys to the infra provider (amazon, google, digitalocean, etc)
- 
+
 Not included with this repo:
 
- - `envs/production/infra-tusd.pem` - used to log in via SSH (`make console`)
+ - `envs/production/infra-imagemagick.pem` - used to log in via SSH (`make console`)
  - `env.sh` - contains secrets, such as keys to infra provider
 
 ## Demo
 
 In this 2 minute demo:
 
- - first a server is provisioned 
+ - first a server is provisioned
  - the machine-type is changed from `c3.large` (2 cores) to `c3.xlarge` (4 cores)
  - `make deploy-infra`
  - it detects a change, replaces the server, and provisions it
@@ -48,8 +48,8 @@ These programs are installed automatically if you miss them:
 
  - Terraform (local install)
  - terraform-inventory (local install, shipped with repo)
- - Ansible (via pip, asks for sudo password) 
- 
+ - Ansible (via pip, asks for sudo password)
+
 (only works on 64 bits Linux & OSX)
 
 ## Example
@@ -88,13 +88,13 @@ make console
 
 ## Create an encrypted password for use in Ansible
 
-### Linux 
+### Linux
 
 ```bash
 mkpasswd --method=SHA-512
 ```
 
-### OSX 
+### OSX
 
 ```bash
 pip install --upgrade passlib
