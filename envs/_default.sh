@@ -26,6 +26,7 @@
 export APP_PREFIX="IIM"
 export NODE_APP_PREFIX="${APP_PREFIX}"
 
+export IIM_IMAGEMAGICK_VERSION="6.9.2-0"
 export IIM_APP_FQDN="imagemagick.transloadit.com"
 export IIM_MACHINE_FQDN="imagemagick1.transloadit.com"
 

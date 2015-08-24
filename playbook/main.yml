@@ -86,6 +86,7 @@
     - name: Build | Install Dev Packages
       apt: pkg={{ item }} state=present
       with_items:
+        - build-essential
         - cpanminus
         - fftw-dev
         - libdjvulibre-dev
@@ -106,6 +107,7 @@
         - libwmf-dev
         - libxml2-dev
         - lzip
+        - wget
       tags: build
 
     - name: Build | Get Perl CPAN Modules
@@ -113,6 +115,10 @@
       with_items:
         - Image::Magick
         - Digest::SHA3
+      tags: build
+
+    - name: Build | Compile latest ImageMagick
+      script: scripts/build-imagemagick.sh {{ lookup('env','IIM_IMAGEMAGICK_VERSION') }} creates=/home/ubuntu/built-imagemagick-{{ lookup('env','IIM_IMAGEMAGICK_VERSION') }}.txt
       tags: build
 
     - name: Content | Upload Daily Mirror script

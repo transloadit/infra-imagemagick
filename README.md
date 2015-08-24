@@ -115,8 +115,8 @@ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_c
 
 ## Todo
 
-- [ ] the latest ImageMagick needs to be installed (I can do this manually if needed)
 - [ ] State backup/restore (db, git, etc)?
+- [x] the latest ImageMagick needs to be installed (I can do this manually if needed)
 - [x] apache2 to support perl CGI scripts (test with http://imagemagick.transloadit.com/ImageMagick/MagickStudio/scripts/MagickStudio.cgi
 - [x] apache2 goes to /var/www/html/ImageMagick for http://imagemagick.transloadit.com and / or transloadit.imagemagick.org
 - [x] user cristy with the same public key as your ubuntu user - https://github.com/transloadit/infra-imagemagick/commit/fd616fcaea4102015f20f06b2c5688337308ae1e
