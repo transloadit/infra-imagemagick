@@ -53,6 +53,7 @@
 
     - name: Web | Create webroot
       file: path=/var/www state=directory owner=webdev group=www-data mode=0775 recurse=yes
+      tags: web
 
     - name: Web | Apache Modules
       apache2_module: state=present name={{ item }}
@@ -60,22 +61,27 @@
         - cgi
         - perl
       register: apache_modules
+      tags: web
 
     - name: Web | Apache Vhost Default
       action: template src=templates/apache-vhost-default.j2 dest=/etc/apache2/sites-enabled/000-default.conf
       register: apache_vhost
+      tags: web
 
     - name: Web | Restart
       action: service name=vsftpd state=restarted
       when: apache_modules|changed or apache_vhost|changed
+      tags: web
 
     - name: FTP | Write config
       action: template src=templates/vsftpd.conf.j2 dest=/etc/vsftpd.conf
       register: vsftp_conf
+      tags: ftp
 
     - name: FTP | Restart
       action: service name=vsftpd state=restarted
       when: vsftp_conf|changed
+      tags: ftp
 
     - name: ImageMagick Development | Dev Packges
       apt: pkg={{ item }} state=present
@@ -88,23 +94,26 @@
         - libgs-dev
         - libjpeg-dev
         - liblcms-dev
-        - libperl-dev
         - liblqr-dev
         - liblzma-dev
         - libopenexr-dev
         - libpango1.0-dev
+        - libperl-dev
         - libpng-dev
         - librsvg2-dev
         - libtiff-dev
         - libwebp-dev
         - libwmf-dev
         - libxml2-dev
+        - lzip
+      tags: build
 
     - name: ImageMagick Development | Perl Modules
       cpanm: name={{ item }} notest=True
       with_items:
         - Image::Magick
         - Digest::SHA3
+      tags: build
 
     - name: Content | Upload Daily Mirror script
       copy: src=scripts/content-fetch.sh dest=/home/ubuntu/content-fetch.sh mode=0755 owner=ubuntu group=ubuntu

@@ -74,6 +74,18 @@ If you only want to run a particular Ansible job, you can use tags. For example:
 IIM_ANSIBLE_TAGS=content make deploy
 ```
 
+or
+
+```bash
+IIM_ANSIBLE_TAGS=build make deploy
+```
+
+or
+
+```bash
+IIM_ANSIBLE_TAGS=web make deploy
+```
+
 If you want to deploy with an unclean Git dir, use `unsafe` variants:
 
 ```bash
