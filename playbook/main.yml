@@ -64,7 +64,7 @@
       tags: web
 
     - name: Web | Apache Vhost Default
-      action: template src=templates/apache-vhost-default.j2 dest=/etc/apache2/sites-enabled/000-default.conf
+      action: template src=templates/apache-vhosts.j2 dest=/etc/apache2/sites-enabled/000-default.conf
       register: apache_vhost
       tags: web
 

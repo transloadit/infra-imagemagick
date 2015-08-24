@@ -1,0 +1,45 @@
+# Default / Catchall VHost
+<VirtualHost *:80>
+	ServerName {{ lookup('env','IIM_DOMAIN') }}
+	ServerAlias *
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html
+
+	Options Indexes FollowSymLinks ExecCGI
+	AddHandler cgi-script .cgi
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	<Directory /var/www/>
+		Options +Indexes +FollowSymLinks +MultiViews +ExecCGI
+		AllowOverride None
+		Order allow,deny
+		allow from all
+		AddHandler cgi-script .cgi
+	</Directory>
+</VirtualHost>
+
+# Mirror VHost
+<VirtualHost *:80>
+	ServerName imagemagick.transloadit.com
+	ServerAlias transloadit.imagemagick.org
+
+	ServerAdmin webmaster@localhost
+	DocumentRoot /var/www/html/ImageMagick
+
+	Options Indexes FollowSymLinks ExecCGI
+	AddHandler cgi-script .cgi
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+	<Directory /var/www/html/ImageMagick>
+		Options +Indexes +FollowSymLinks +MultiViews +ExecCGI
+		AllowOverride None
+		Order allow,deny
+		allow from all
+		AddHandler cgi-script .cgi
+	</Directory>
+</VirtualHost>
