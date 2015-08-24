@@ -56,12 +56,20 @@ resource "aws_instance" "infra-imagemagick-server" {
   }
 }
 
-resource "aws_route53_record" "www" {
+resource "aws_route53_record" "www1" {
   zone_id  = "${var.IIM_AWS_ZONE_ID}"
   name     = "${var.IIM_DOMAIN}"
   type     = "CNAME"
   ttl      = "300"
   records  = [ "${aws_instance.infra-imagemagick-server.public_dns}" ]
+}
+
+resource "aws_route53_record" "www" {
+  zone_id  = "${var.IIM_AWS_ZONE_ID}"
+  name     = "imagemagick.transloadit.com"
+  type     = "CNAME"
+  ttl      = "300"
+  records  = [ "${var.IIM_DOMAIN}" ]
 }
 
 resource "aws_security_group" "fw-infra-imagemagick-main" {
