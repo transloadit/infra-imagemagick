@@ -83,7 +83,7 @@
       when: vsftp_conf|changed
       tags: ftp
 
-    - name: ImageMagick Development | Dev Packges
+    - name: Build | Install Dev Packages
       apt: pkg={{ item }} state=present
       with_items:
         - cpanminus
@@ -108,7 +108,7 @@
         - lzip
       tags: build
 
-    - name: ImageMagick Development | Perl Modules
+    - name: Build | Get Perl CPAN Modules
       cpanm: name={{ item }} notest=True
       with_items:
         - Image::Magick
