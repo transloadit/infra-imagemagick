@@ -1,19 +1,18 @@
 # Default / Catchall VHost
-<VirtualHost *:80>
+<VirtualHost *>
 	ServerName {{ lookup('env','IIM_MACHINE_FQDN') }}
-	ServerAlias *
 
 	ServerAdmin webmaster@localhost
 	DocumentRoot /var/www/html
 
-	Options Indexes FollowSymLinks ExecCGI
+	Options FollowSymLinks ExecCGI
 	AddHandler cgi-script .cgi
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	ErrorLog ${APACHE_LOG_DIR}/default-error.log
+	CustomLog ${APACHE_LOG_DIR}/default-access.log combined
 
-	<Directory /var/www/>
-		Options +Indexes +FollowSymLinks +MultiViews +ExecCGI
+	<Directory /var/www/html>
+		Options +FollowSymLinks +MultiViews +ExecCGI
 		AllowOverride None
 		Order allow,deny
 		allow from all
@@ -22,24 +21,22 @@
 </VirtualHost>
 
 # Mirror VHost
-<VirtualHost *:80>
+<VirtualHost *>
 	ServerName {{ lookup('env','IIM_APP_FQDN') }}
 	ServerAlias transloadit.imagemagick.org
 
 	ServerAdmin webmaster@localhost
 	DocumentRoot /var/www/html/ImageMagick
 
-	Options Indexes FollowSymLinks ExecCGI
-	AddHandler cgi-script .cgi
+	Options Indexes FollowSymLinks
 
-	ErrorLog ${APACHE_LOG_DIR}/error.log
-	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	ErrorLog ${APACHE_LOG_DIR}/mirror-error.log
+	CustomLog ${APACHE_LOG_DIR}/mirror-access.log combined
 
 	<Directory /var/www/html/ImageMagick>
-		Options +Indexes +FollowSymLinks +MultiViews +ExecCGI
+		Options +Indexes +FollowSymLinks +MultiViews
 		AllowOverride None
 		Order allow,deny
 		allow from all
-		AddHandler cgi-script .cgi
 	</Directory>
 </VirtualHost>
