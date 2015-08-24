@@ -115,7 +115,10 @@ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_c
 
 ## Todo
 
-- [ ] State backup/restore (db, git, etc)?
+- [ ] Use `~cristy/bin/magick-local` for installing ImageMagick
+- [ ] Include scripts to setup jqmagick after Cristy provides them
+- [ ] Destroy & relaunch server to see if everything is correctly in playbook & infra.tf
+- [x] State backup/restore (db, git, etc)?
 - [x] the latest ImageMagick needs to be installed (I can do this manually if needed)
 - [x] apache2 to support perl CGI scripts (test with http://imagemagick.transloadit.com/ImageMagick/MagickStudio/scripts/MagickStudio.cgi
 - [x] apache2 goes to /var/www/html/ImageMagick for http://imagemagick.transloadit.com and / or transloadit.imagemagick.org
