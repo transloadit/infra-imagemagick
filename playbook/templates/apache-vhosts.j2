@@ -1,6 +1,6 @@
 # Default / Catchall VHost
 <VirtualHost *:80>
-	ServerName {{ lookup('env','IIM_DOMAIN') }}
+	ServerName {{ lookup('env','IIM_MACHINE_FQDN') }}
 	ServerAlias *
 
 	ServerAdmin webmaster@localhost
@@ -23,7 +23,7 @@
 
 # Mirror VHost
 <VirtualHost *:80>
-	ServerName imagemagick.transloadit.com
+	ServerName {{ lookup('env','IIM_APP_FQDN') }}
 	ServerAlias transloadit.imagemagick.org
 
 	ServerAdmin webmaster@localhost

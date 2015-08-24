@@ -307,7 +307,8 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   terraformArgs="${terraformArgs} -var IIM_AWS_SECRET_KEY=${IIM_AWS_SECRET_KEY}"
   terraformArgs="${terraformArgs} -var IIM_AWS_ACCESS_KEY=${IIM_AWS_ACCESS_KEY}"
   terraformArgs="${terraformArgs} -var IIM_AWS_ZONE_ID=${IIM_AWS_ZONE_ID}"
-  terraformArgs="${terraformArgs} -var IIM_DOMAIN=${IIM_DOMAIN}"
+  terraformArgs="${terraformArgs} -var IIM_APP_FQDN=${IIM_APP_FQDN}"
+  terraformArgs="${terraformArgs} -var IIM_MACHINE_FQDN=${IIM_MACHINE_FQDN}"
   terraformArgs="${terraformArgs} -var IIM_SSH_KEYPUB=\"${IIM_SSH_KEYPUB}\""
   terraformArgs="${terraformArgs} -var IIM_SSH_USER=${IIM_SSH_USER}"
   terraformArgs="${terraformArgs} -var IIM_SSH_KEY_FILE=${IIM_SSH_KEY_FILE}"
@@ -379,7 +380,7 @@ for action in "prepare" "init" "plan" "backup" "launch" "install" "upload" "setu
   fi
 
   if [ "${action}" = "show" ]; then
-    echo "http://${IIM_DOMAIN}:${IIM_APP_PORT}"
+    echo "http://${IIM_MACHINE_FQDN}:${IIM_APP_PORT}"
     # for host in $("${__terraformExe}" output public_addresses); do
     #   echo " - http://${host}:${IIM_APP_PORT}"
     # done

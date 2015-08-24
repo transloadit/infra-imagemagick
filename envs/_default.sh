@@ -26,7 +26,8 @@
 export APP_PREFIX="IIM"
 export NODE_APP_PREFIX="${APP_PREFIX}"
 
-export IIM_DOMAIN="imagemagick1.transloadit.com"
+export IIM_APP_FQDN="imagemagick.transloadit.com"
+export IIM_MACHINE_FQDN="imagemagick1.transloadit.com"
 
 export IIM_APP_DIR="/srv/current"
 export IIM_APP_NAME="imagemagick"

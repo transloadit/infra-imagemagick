@@ -1,7 +1,8 @@
 variable "IIM_AWS_ACCESS_KEY" {}
 variable "IIM_AWS_SECRET_KEY" {}
 variable "IIM_AWS_ZONE_ID" {}
-variable "IIM_DOMAIN" {}
+variable "IIM_APP_FQDN" {}
+variable "IIM_MACHINE_FQDN" {}
 variable "IIM_SSH_USER" {}
 variable "IIM_SSH_KEY_FILE" {}
 variable "IIM_SSH_KEY_NAME" {}
@@ -52,13 +53,13 @@ resource "aws_instance" "infra-imagemagick-server" {
   }
 
   tags {
-    Name = "${var.IIM_DOMAIN}"
+    Name = "${var.IIM_MACHINE_FQDN}"
   }
 }
 
 resource "aws_route53_record" "www1" {
   zone_id  = "${var.IIM_AWS_ZONE_ID}"
-  name     = "${var.IIM_DOMAIN}"
+  name     = "${var.IIM_MACHINE_FQDN}"
   type     = "CNAME"
   ttl      = "300"
   records  = [ "${aws_instance.infra-imagemagick-server.public_dns}" ]
@@ -66,10 +67,10 @@ resource "aws_route53_record" "www1" {
 
 resource "aws_route53_record" "www" {
   zone_id  = "${var.IIM_AWS_ZONE_ID}"
-  name     = "imagemagick.transloadit.com"
+  name     = "${var.IIM_APP_FQDN}"
   type     = "CNAME"
   ttl      = "300"
-  records  = [ "${var.IIM_DOMAIN}" ]
+  records  = [ "${var.IIM_MACHINE_FQDN}" ]
 }
 
 resource "aws_security_group" "fw-infra-imagemagick-main" {
