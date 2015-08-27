@@ -70,7 +70,6 @@
 
     - name: Web | Restart
       action: service name=vsftpd state=restarted
-      when: apache_modules|changed or apache_vhost|changed
       tags: web
 
     - name: FTP | Write config
