@@ -69,7 +69,7 @@
       tags: web
 
     - name: Web | Restart
-      action: service name=vsftpd state=restarted
+      action: service name=apache2 state=restarted
       tags: web
 
     - name: FTP | Write config
