@@ -24,12 +24,12 @@ cmdRsync=$(echo rsync \
   --compress)
 
 sudo mkdir -p /var/ftp/pub/ImageMagick
-sudo ${cmdRsync} --exclude 'cache/' rsync://magick.imagemagick.org/magick_html/ /var/www/html/ImageMagick
+sudo ${cmdRsync} --exclude 'cache/' rsync://mirror.imagemagick.org/magick_html/ /var/www/html/ImageMagick
 sudo rm -rf /var/www/html/ImageMagick/cache/*.php
-sudo ${cmdRsync} --exclude 'cache/' rsync://magick.imagemagick.org/magick7_html/ /var/www/html/ImageMagick-7
+sudo ${cmdRsync} --exclude 'cache/' rsync://mirror.imagemagick.org/magick7_html/ /var/www/html/ImageMagick-7
 sudo rm -rf /var/www/html/ImageMagick-7/cache/*.php
 sudo cp /etc/magick/MagickStudio.pm /var/www/html/ImageMagick/MagickStudio/scripts
 sudo cp /etc/magick/policy.xml /usr/local/etc/ImageMagick-6/policy.xml
-sudo ${cmdRsync} --delete rsync://magick.imagemagick.org/magick_usage/ /var/www/html/ImageMagick/Usage
-sudo ${cmdRsync} --delete rsync://magick.imagemagick.org/magick_ftp/ /var/ftp/pub/ImageMagick
+sudo ${cmdRsync} --delete rsync://mirror.imagemagick.org/magick_usage/ /var/www/html/ImageMagick/Usage
+sudo ${cmdRsync} --delete rsync://mirror.imagemagick.org/magick_ftp/ /var/ftp/pub/ImageMagick
 sudo chown -R webdev.www-data /var/www
