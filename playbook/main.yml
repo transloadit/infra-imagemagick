@@ -3,13 +3,13 @@
 
   tasks:
     - name: Access | Add authorized_keys for user ubuntu
-      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/cristy-dsa.pub.j2') }}"
+      authorized_key: user=ubuntu key="{{ lookup('file', 'templates/webdev-dsa.pub.j2') }}"
 
-    - name: Access | Add user cristy
-      user: name=cristy home=/home/cristy shell=/bin/bash comment="Cristy" group=www-data
+    - name: Access | Add user webdev
+      user: name=webdev home=/home/webdev shell=/bin/bash comment="Webdev" group=www-data
 
-    - name: Access | Add authorized_keys for user cristy
-      authorized_key: user=cristy key="{{ lookup('file', 'templates/cristy-dsa.pub.j2') }}"
+    - name: Access | Add authorized_keys for user webdev
+      authorized_key: user=webdev key="{{ lookup('file', 'templates/webdev-dsa.pub.j2') }}"
 
     - name: Common | Gather EC2 facts
       action: ec2_facts

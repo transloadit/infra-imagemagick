@@ -7,7 +7,7 @@ variable "IIM_SSH_USER" {}
 variable "IIM_SSH_KEY_FILE" {}
 variable "IIM_SSH_KEY_NAME" {}
 
-variable "ip_cristy" {
+variable "ip_webdev" {
   default = "50.251.58.9/32"
 }
 variable "ip_kevin" {
