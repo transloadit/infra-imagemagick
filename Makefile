@@ -1,55 +1,23 @@
-SHELL     := /usr/bin/env bash
+PHONY: frey
+frey:
+	@grep 0.3.13 node_modules/frey/package.json 2>&1 > /dev/null || npm install frey@0.3.13
 
-.PHONY: lint
-lint:
-	@[ ! -f coffeelint.json ] && $(COFFEELINT) --makeconfig > coffeelint.json || true
-	$(COFFEELINT) --file ./coffeelint.json test lib bin ./app.coffee
+PHONY: provision
+provision: frey
+	@source env.sh && node_modules/.bin/frey install
 
-.PHONY: deploy-infra
-deploy-infra:
-	# Sets up all local & remote dependencies. Useful for first-time uses
-	# and to apply infra / software changes.
-	@git checkout master
-	@test -z "$$(git status --porcelain)" || (echo "Please first commit/clean your Git working directory" && false)
-	@git pull
-	source env.sh && ./control.sh prepare
+PHONY: launch
+launch: frey
+	@source env.infra.sh && node_modules/.bin/frey infra
 
-.PHONY: deploy-infra-unsafe
-deploy-infra-unsafe:
-	# Sets up all local & remote dependencies. Useful for first-time uses
-	# and to apply infra / software changes.
-	# Does not check git index
-	@git checkout master
-	@git pull
-	source env.sh && ./control.sh prepare
+PHONY: console
+console: frey
+	@source env.sh && node_modules/.bin/frey remote
 
-.PHONY: deploy
-deploy:
-	# For regular use. Just uploads the code and restarts the services
-	@git checkout master
-	@test -z "$$(git status --porcelain)" || (echo "Please first commit/clean your Git working directory" && false)
-	@git pull
-	source env.sh && ./control.sh install
+PHONY: deploy-localfrey
+deploy-localfrey: frey
+	@source env.sh && babel-node ${HOME}/code/frey/src/cli.js setup
 
-.PHONY: deploy-unsafe
-deploy-unsafe:
-	# Does not check git index
-	@git checkout master
-	@git pull
-	source env.sh && ./control.sh install
-
-.PHONY: backup
-backup:
-	source env.sh && ./control.sh backup
-
-.PHONY: restore
-restore:
-	source env.sh && ./control.sh restore
-
-.PHONY: facts
-facts:
-	source env.sh && ./control.sh facts
-
-.PHONY: console
-console:
-	source env.sh && ./control.sh remote
+PHONY: console-localfrey
+console-localfrey: frey
+	@source env.sh && babel-node ${HOME}/code/frey/src/cli.js remote

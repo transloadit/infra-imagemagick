@@ -11,7 +11,7 @@ __dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename ${__file} .sh)"
 
-version="${1:-${IIM_IMAGEMAGICK_VERSION}}"
+version="${1:-${FREY_IMAGEMAGICK_VERSION}}"
 dirname="ImageMagick-${version}"
 filename="${dirname}.tar.lz"
 cpuCores=$(egrep '^processor' /proc/cpuinfo |wc -l)

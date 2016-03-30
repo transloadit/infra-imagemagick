@@ -7,11 +7,15 @@ __file="${__dir}/$(basename "${BASH_SOURCE[0]}")"
 __base="$(basename ${__file} .sh)"
 __rootdir="${__dir}"
 
+export NODE_ENV="${NODE_ENV:-development}"
 export DEPLOY_ENV="${DEPLOY_ENV:-production}"
+export DEBUG="frey:*"
 
-source "${__rootdir}/envs/${DEPLOY_ENV}/config.sh"
+export FREY_DOMAIN="imagemagick.transloadit.com"
+# export FREY_ENCRYPTION_SECRET="***"
 
-# Secret keys here:
-# export IIM_AWS_ACCESS_KEY="xyz"
-# export IIM_AWS_SECRET_KEY="xyz123"
-# export IIM_AWS_ZONE_ID="Z123"
+# See readme for how to update pass
+# export FREY_FTP_USER="webdev"
+#      FREY_FTP_PASS <-- is set in ./env.sh, which is kept out of Git
+# export FREY_FTP_PASS_ENC='***'
+# export FREY_IMAGEMAGICK_VERSION="6.9.2-0"
