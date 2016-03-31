@@ -19,7 +19,7 @@ python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_c
 
 ## Todo
 
-- [ ] Use `~webdev/bin/magick-local` for installing ImageMagick
+- [ ] Use `~webdev/bin/magick-local` for installing ImageMagick, and add to repo
 - [ ] Include scripts to setup jqmagick after Webdev provides them
 - [ ] Destroy & relaunch server to see if everything is correctly in playbook & infra.tf
 - [x] State backup/restore (db, git, etc)?
