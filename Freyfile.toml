@@ -34,19 +34,19 @@
 [infra.output.endpoint]
   value = "http://transloadit.imagemagick.org:80"
 [infra.output.public_address]
-  value = "${aws_instance.infra-imagemagick-server.0.public_dns}"
+  value = "${aws_instance.infra-imagemagick.0.public_dns}"
 [infra.output.public_addresses]
-  value = "${join(\"\n\", aws_instance.infra-imagemagick-server.*.public_dns)}"
+  value = "${join(\"\n\", aws_instance.infra-imagemagick.*.public_dns)}"
 
-[infra.resource.aws_instance.infra-imagemagick-server]
+[infra.resource.aws_instance.infra-imagemagick]
   ami             = "${lookup(var.ami, var.region)}"
   instance_type   = "c3.xlarge"
   key_name        = "infra-imagemagick"
   security_groups = ["fw-infra-imagemagick-main"]
-  [infra.resource.aws_instance.infra-imagemagick-server.connection]
+  [infra.resource.aws_instance.infra-imagemagick.connection]
     key_file = "{{{config.global.ssh.privatekey_file}}}"
     user     = "{{{config.global.ssh.user}}}"
-  [[infra.resource.aws_instance.infra-imagemagick-server.tags]]
+  [[infra.resource.aws_instance.infra-imagemagick.tags]]
     Name = "imagemagick1.transloadit.com"
 
 [infra.resource.aws_route53_record.www]
@@ -58,7 +58,7 @@
 
 [infra.resource.aws_route53_record.www1]
   name    = "imagemagick1.transloadit.com"
-  records = ["${aws_instance.infra-imagemagick-server.0.public_dns}"]
+  records = ["${aws_instance.infra-imagemagick.0.public_dns}"]
   ttl     = "300"
   type    = "CNAME"
   zone_id = "${var.FREY_AWS_ZONE_ID}"
@@ -88,8 +88,8 @@
     to_port     = 50999
 
 [[install.playbooks]]
-  hosts = "infra-imagemagick-server"
-  name  = "Install infra-imagemagick-server"
+  hosts = "infra-imagemagick"
+  name  = "Install infra-imagemagick"
   roles = [
     "{{{init.paths.roles_dir}}}/apt/v1.0.0",
   ]
@@ -153,8 +153,8 @@
     name       = "Common | Add convenience shortcut wtf"
 
 [[setup.playbooks]]
-  hosts = "infra-imagemagick-server"
-  name  = "Setup infra-imagemagick-server"
+  hosts = "infra-imagemagick"
+  name  = "Setup infra-imagemagick"
 
   [[setup.playbooks.tasks]]
     action = "ec2_facts"
