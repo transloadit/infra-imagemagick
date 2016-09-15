@@ -1,7 +1,9 @@
-FREY_VERSION := 0.3.13
+SHELL        := /usr/bin/env bash
+FREY_VERSION := 0.3.23
 
 .PHONY: frey
 frey:
+	@mkdir -p node_modules
 	@grep $(FREY_VERSION) node_modules/frey/package.json 2>&1 > /dev/null || npm install frey@$(FREY_VERSION)
 
 .PHONY: provision
