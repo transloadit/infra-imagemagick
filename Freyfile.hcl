@@ -121,8 +121,9 @@ install {
   playbooks {
     hosts = ["infra-imagemagick"]
     name  = "Install infra-imagemagick"
-    vars {
-      apt_packages = [
+    roles {
+      role        = "{{{init.paths.roles_dir}}}/apt/1.3.0"
+      apt_install = [
         "apache2",
         "apg",
         "apt-file",
@@ -165,10 +166,7 @@ install {
       ]
     }
     roles {
-      role = "{{{init.paths.roles_dir}}}/unattended-upgrades/v1.2.0"
-    }
-    roles {
-      role = "{{{init.paths.roles_dir}}}/apt/v1.0.0"
+      role = "{{{init.paths.roles_dir}}}/unattended-upgrades/1.3.0"
     }
     tasks {
       authorized_key = "user=ubuntu key='{{ lookup('file', 'templates/webdev-dsa.pub.j2') }}'"

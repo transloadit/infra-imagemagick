@@ -1,5 +1,5 @@
 SHELL        := /usr/bin/env bash
-FREY_VERSION := 0.3.23
+FREY_VERSION := 0.3.27
 
 .PHONY: frey
 frey:
