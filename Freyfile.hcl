@@ -4,14 +4,15 @@ global {
     key_dir = "./ssh"
   }
   ansiblecfg {
-    ssh_connection {
-      ssh_args = "-o ControlMaster=auto -o ControlPersist=60s"
-    }
     privilege_escalation {
       become = true
     }
     defaults {
       host_key_checking = false
+      ansible_managed = "Ansible managed"
+    }
+    ssh_connection {
+      pipelining = true
     }
   }
 }
