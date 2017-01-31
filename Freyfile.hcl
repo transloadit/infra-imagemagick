@@ -123,7 +123,7 @@ install {
     hosts = ["infra-imagemagick"]
     name  = "Install infra-imagemagick"
     roles {
-      role        = "{{{init.paths.roles_dir}}}/apt/1.3.0"
+      role        = "{{{init.paths.roles_dir}}}/apt/1.4.0"
       apt_install = [
         "apache2",
         "apg",
@@ -167,7 +167,7 @@ install {
       ]
     }
     roles {
-      role = "{{{init.paths.roles_dir}}}/unattended-upgrades/1.3.0"
+      role = "{{{init.paths.roles_dir}}}/unattended-upgrades/1.3.1"
     }
     tasks {
       authorized_key = "user=ubuntu key='{{ lookup('file', 'templates/webdev-dsa.pub.j2') }}'"
