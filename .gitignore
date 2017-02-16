@@ -7,5 +7,4 @@ npm-debug.log
 
 Frey-residu*
 *.pem
-env.sh
-env.infra.sh
+env.*
