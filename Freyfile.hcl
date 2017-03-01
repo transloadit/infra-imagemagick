@@ -169,6 +169,12 @@ install {
     roles {
       role = "{{{init.paths.roles_dir}}}/unattended-upgrades/1.3.1"
     }
+    roles {
+      role = "{{{init.paths.roles_dir}}}/fqdn/1.2.1"
+    }
+    roles {
+      role = "{{{init.paths.roles_dir}}}/timezone/1.0.0"
+    }
     tasks {
       authorized_key = "user=ubuntu key='{{ lookup('file', 'templates/webdev-dsa.pub.j2') }}'"
       name           = "Access | Add authorized_keys for user ubuntu"
